@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Go语言学习笔记（八） 面向对象</title>
+  <meta name="description" content="go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Go语言学习笔记（八） 面向对象">
+  <meta name="twitter:description" content="go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Go语言学习笔记（八） 面向对象">
+  <meta property="og:description" content="go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%AB-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">
+  <!--
+  <link rel="alternate" type="application/rss+xml" title="Allen Zhang" href="http://localhost:4000/feed.xml">
+  -->
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 Allen Zhang 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="Allen Zhang logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Allen Zhang" class="blog-button">Allen Zhang</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">一个记录我工作、学习历程的博客</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">新学期，新气象；百尺竿头，更进一步……</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">我不生产知识，只是知识的搬运工</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/Allen-ZhangM" title="@Allen-ZhangM 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <!--
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+	-->
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:allenzhanglearner@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-blue"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-04-11 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-04-11</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">Go语言学习笔记（八） 面向对象</h1>
+  </header>
+
+  <section class="post">
+    <p>go并不是一个纯面向对象的编程语言。在go中的面向对象，结构体替换了类。<br />
+Go并没有提供类class，但是它提供了结构体struct，方法method，可以在结构体上添加。提供了捆绑数据和方法的行为，这些数据和方法与类类似。</p>
+
+<h2 id="定义结构体和方法">定义结构体和方法</h2>
+
+<p>创建一个外部可访问的Employee结构体，并为这个结构体定义一个方法LeavesRemaining()</p>
+
+<pre><code class="language-Go">package employee
+
+import (
+    "fmt"
+)
+
+type Employee struct {
+    FirstName   string
+    LastName    string
+    TotalLeaves int
+    LeavesTaken int
+}
+
+func (e Employee) LeavesRemaining() {
+    fmt.Printf("%s %s has %d leaves remaining", e.FirstName, e.LastName, (e.TotalLeaves - e.LeavesTaken))
+}
+</code></pre>
+
+<p>在另一个包下创建main.go</p>
+
+<pre><code class="language-Go">package main
+
+import "oop/employee"
+
+func main() {
+    e := employee.Employee {
+        FirstName: "Sam",
+        LastName: "Adolf",
+        TotalLeaves: 30,
+        LeavesTaken: 20,
+    }
+    e.LeavesRemaining()
+}
+</code></pre>
+
+<p>运行结果无误</p>
+
+<pre><code class="language-Go">Sam Adolf has 10 leaves remaining
+</code></pre>
+
+<h2 id="new函数替代了构造函数">New()函数替代了构造函数</h2>
+
+<p>我们上面写的程序看起来不错，但是里面有一个微妙的问题。让我们看看当我们用0值定义employee struct时会发生什么。更改main的内容。转到下面的代码，</p>
+
+<pre><code class="language-Go">package main
+
+import "oop/employee"
+
+func main() {
+    var e employee.Employee
+    e.LeavesRemaining()
+}
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>has 0 leaves remaining
+
+</code></pre></div></div>
+
+<p>通过运行结果可以知道，使用Employee的零值创建的变量是不可用的。它没有有效的名、姓，也没有有效的保留细节。在其他的OOP语言中，比如java，这个问题可以通过使用构造函数来解决。使用参数化构造函数可以创建一个有效的对象。</p>
+
+<p>go不支持构造函数。如果某个类型的零值不可用，则程序员的任务是不导出该类型以防止其他包的访问，并提供一个名为NewT(parameters)的函数，该函数初始化类型T和所需的值。在go中，它是一个命名一个函数的约定，它创建了一个T类型的值给NewT(parameters)。这就像一个构造函数。如果包只定义了一个类型，那么它的一个约定就是将这个函数命名为New(parameters)而不是NewT(parameters)。</p>
+
+<p>更改employee.go的代码：</p>
+
+<p>首先修改employee结构体为非导出，并创建一个函数New()，它将创建一个新Employee。代码如下：</p>
+
+<pre><code class="language-Go">package employee
+
+import (
+    "fmt"
+)
+
+type employee struct {
+    firstName   string
+    lastName    string
+    totalLeaves int
+    leavesTaken int
+}
+
+func New(firstName string, lastName string, totalLeave int, leavesTaken int) employee {
+    e := employee {firstName, lastName, totalLeave, leavesTaken}
+    return e
+}
+
+func (e employee) LeavesRemaining() {
+    fmt.Printf("%s %s has %d leaves remaining", e.firstName, e.lastName, (e.totalLeaves - e.leavesTaken))
+}
+
+</code></pre>
+
+<p>我们在这里做了一些重要的改变。我们已经将Employee struct的起始字母e设置为小写，即我们已经将类型Employee struct更改为type Employee struct。通过这样做，我们成功地导出了employee结构并阻止了其他包的访问。将未导出的结构的所有字段都导出为未导出的方法是很好的做法，除非有特定的需要导出它们。由于我们不需要在包之外的任何地方使用employee struct的字段，所以我们也没有导出所有字段。</p>
+
+<p>由于employee是未导出的，所以不可能从其他包中创建类型employee的值。因此，我们提供了一个输出的新函数。将所需的参数作为输入并返回新创建的employee。</p>
+
+<p>这个程序还需要做一些修改，让它能够工作，但是让我们运行这个程序来了解到目前为止变化的效果。如果这个程序运行，它将会失败，有以下编译错误，</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>go/src/constructor/main.go:6: undefined: employee.Employee
+
+</code></pre></div></div>
+
+<p>这是因为我们有未导出的Employee，因此编译器抛出错误，该类型在main中没有定义。完美的。正是我们想要的。现在没有其他的包能够创建一个零值的员工。我们成功地防止了一个无法使用的员工结构价值被创建。现在创建员工的唯一方法是使用新功能。</p>
+
+<p>修改main.go代码</p>
+
+<pre><code class="language-Go">package main
+
+import "oop/employee"
+
+func main() {
+    e := employee.New("Sam", "Adolf", 30, 20)
+    e.LeavesRemaining()
+}
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sam Adolf has 10 leaves remaining
+
+</code></pre></div></div>
+
+<p>因此，我们可以明白，虽然Go不支持类，但是结构体可以有效地使用，在使用构造函数的位置，使用New(parameters)的方法即可。</p>
+
+<h2 id="组成composition-替代了继承inheritance">组成(Composition )替代了继承(Inheritance)</h2>
+
+<p>Go不支持继承，但它支持组合。组合的一般定义是“放在一起”。构图的一个例子就是汽车。汽车是由轮子、发动机和其他各种部件组成的。</p>
+
+<p>博客文章就是一个完美的组合例子。每个博客都有标题、内容和作者信息。这可以用组合完美地表示出来。</p>
+
+<h3 id="通过嵌入结构体实现组成">通过嵌入结构体实现组成</h3>
+
+<p>可以通过将一个struct类型嵌入到另一个结构中实现。</p>
+
+<p>示例代码：</p>
+
+<pre><code class="language-Go">package main
+
+import (
+    "fmt"
+)
+
+/*
+我们创建了一个author struct，它包含字段名、lastName和bio。我们还添加了一个方法fullName()，将作者作为接收者类型，这将返回作者的全名。
+*/
+type author struct {
+    firstName string
+    lastName  string
+    bio       string
+}
+
+func (a author) fullName() string {
+    return fmt.Sprintf("%s %s", a.firstName, a.lastName)
+}
+/*
+post struct有字段标题、内容。它还有一个嵌入式匿名字段作者。这个字段表示post struct是由author组成的。现在post struct可以访问作者结构的所有字段和方法。我们还在post struct中添加了details()方法，它打印出作者的标题、内容、全名和bio。
+*/
+type post struct {
+    title     string
+    content   string
+    author
+}
+
+func (p post) details() {
+    fmt.Println("Title: ", p.title)
+    fmt.Println("Content: ", p.content)
+    fmt.Println("Author: ", p.author.fullName())
+    fmt.Println("Bio: ", p.author.bio)
+}
+
+func main() {
+    author1 := author{
+        "Naveen",
+        "Ramanathan",
+        "Golang Enthusiast",
+    }
+    post1 := post{
+        "Inheritance in Go",
+        "Go supports composition instead of inheritance",
+        author1,
+    }
+    post1.details()
+}
+
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Title:  Inheritance in Go
+Content:  Go supports composition instead of inheritance
+Author:  Naveen Ramanathan
+Bio:  Golang Enthusiast
+
+</code></pre></div></div>
+
+<p><strong>嵌入结构体的切片</strong></p>
+
+<p>在以上程序的main函数下增加以下代码，并运行</p>
+
+<pre><code class="language-Go">type website struct {
+        []post
+}
+func (w website) contents() {
+    fmt.Println("Contents of Website\n")
+    for _, v := range w.posts {
+        v.details()
+        fmt.Println()
+    }
+}
+
+</code></pre>
+
+<p>运行报错：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main.go:31:9: syntax error: unexpected [, expecting field name or embedded type
+
+</code></pre></div></div>
+
+<p>这个错误指向structs []post的嵌入部分。原因是不可能匿名嵌入一片。需要一个字段名。我们来修正这个错误，让编译器通过。</p>
+
+<pre><code class="language-Go">type website struct {
+        posts []post
+}
+
+</code></pre>
+
+<p>现在让我们修改的main函数,为我们的新的website创建几个posts。修改完完整代码如下：</p>
+
+<pre><code class="language-Go">package main
+
+import (
+    "fmt"
+)
+
+type author struct {
+    firstName string
+    lastName  string
+    bio       string
+}
+
+func (a author) fullName() string {
+    return fmt.Sprintf("%s %s", a.firstName, a.lastName)
+}
+
+type post struct {
+    title   string
+    content string
+    author
+}
+func (p post) details() {
+    fmt.Println("Title: ", p.title)
+    fmt.Println("Content: ", p.content)
+    fmt.Println("Author: ", p.fullName())
+    fmt.Println("Bio: ", p.bio)
+}
+
+type website struct {
+    posts []post
+}
+func (w website) contents() {
+    fmt.Println("Contents of Website\n")
+    for _, v := range w.posts {
+        v.details()
+        fmt.Println()
+    }
+}
+func main() {
+    author1 := author{
+        "Naveen",
+        "Ramanathan",
+        "Golang Enthusiast",
+    }
+    post1 := post{
+        "Inheritance in Go",
+        "Go supports composition instead of inheritance",
+        author1,
+    }
+    post2 := post{
+        "Struct instead of Classes in Go",
+        "Go does not support classes but methods can be added to structs",
+        author1,
+    }
+    post3 := post{
+        "Concurrency",
+        "Go is a concurrent language and not a parallel one",
+        author1,
+    }
+    w := website{
+        posts: []post{post1, post2, post3},
+    }
+    w.contents()
+}
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Contents of Website
+
+Title:  Inheritance in Go
+Content:  Go supports composition instead of inheritance
+Author:  Naveen Ramanathan
+Bio:  Golang Enthusiast
+
+Title:  Struct instead of Classes in Go
+Content:  Go does not support classes but methods can be added to structs
+Author:  Naveen Ramanathan
+Bio:  Golang Enthusiast
+
+Title:  Concurrency
+Content:  Go is a concurrent language and not a parallel one
+Author:  Naveen Ramanathan
+Bio:  Golang Enthusiast
+
+</code></pre></div></div>
+
+<h2 id="多态性polymorphism">多态性(Polymorphism)</h2>
+
+<p>Go中的多态性是在接口的帮助下实现的。正如我们已经讨论过的，接口可以在Go中隐式地实现。如果类型为接口中声明的所有方法提供了定义，则实现一个接口。让我们看看在接口的帮助下如何实现多态。</p>
+
+<p>任何定义接口所有方法的类型都被称为隐式地实现该接口。</p>
+
+<p>类型接口的变量可以保存实现接口的任何值。接口的这个属性用于实现Go中的多态性。</p>
+
+<p>举个例子，一个虚构的组织有两种项目的收入:固定的账单和时间和材料。组织的净收入是由这些项目的收入之和计算出来的。为了保持本教程的简单，我们假设货币是美元，我们不会处理美分。它将使用整数来表示。</p>
+
+<p>首先定义一个接口：Income</p>
+
+<pre><code class="language-Go">type Income interface {
+    calculate() int
+    source() string
+}
+
+</code></pre>
+
+<p>接下来，定义两个结构体：FixedBilling和TimeAndMaterial</p>
+
+<pre><code class="language-Go">type FixedBilling struct {
+    projectName string
+    biddedAmount int
+}
+
+type TimeAndMaterial struct {
+    projectName string
+    noOfHours  int
+    hourlyRate int
+}
+
+</code></pre>
+
+<p>下一步是定义这些结构体类型的方法，计算并返回实际收入和收入来源。</p>
+
+<pre><code class="language-Go">func (fb FixedBilling) calculate() int {
+    return fb.biddedAmount
+}
+
+func (fb FixedBilling) source() string {
+    return fb.projectName
+}
+
+func (tm TimeAndMaterial) calculate() int {
+    return tm.noOfHours * tm.hourlyRate
+}
+
+func (tm TimeAndMaterial) source() string {
+    return tm.projectName
+}
+
+</code></pre>
+
+<p>接下来，我们来声明一下计算和打印总收入的calculateNetIncome函数。</p>
+
+<pre><code class="language-Go">func calculateNetIncome(ic []Income) {
+    var netincome int = 0
+    for _, income := range ic {
+        fmt.Printf("Income From %s = $%d\n", income.source(), income.calculate())
+        netincome += income.calculate()
+    }
+    fmt.Printf("Net income of organisation = $%d", netincome)
+}
+
+</code></pre>
+
+<p>上面的calculateNetIncome函数接受一部分Income接口作为参数。它通过遍历切片和调用calculate()方法来计算总收入。它还通过调用source()方法来显示收入来源。根据收入接口的具体类型，将调用不同的calculate()和source()方法。因此，我们在calculateNetIncome函数中实现了多态。</p>
+
+<p>在未来，如果组织增加了一种新的收入来源，这个函数仍然可以正确地计算总收入，而没有一行代码更改。</p>
+
+<p>最后我们写以下主函数：</p>
+
+<pre><code class="language-Go">func main() {
+    project1 := FixedBilling{projectName: "Project 1", biddedAmount: 5000}
+    project2 := FixedBilling{projectName: "Project 2", biddedAmount: 10000}
+    project3 := TimeAndMaterial{projectName: "Project 3", noOfHours: 160, hourlyRate: 25}
+    incomeStreams := []Income{project1, project2, project3}
+    calculateNetIncome(incomeStreams)
+}
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Income From Project 1 = $5000
+Income From Project 2 = $10000
+Income From Project 3 = $4000
+Net income of organisation = $19000
+
+</code></pre></div></div>
+
+<p>假设该组织通过广告找到了新的收入来源。让我们看看如何简单地添加新的收入方式和计算总收入，而不用对calculateNetIncome函数做任何更改。由于多态性，这样是可行的。</p>
+
+<p>首先让我们定义Advertisement类型和calculate()和source()方法。</p>
+
+<pre><code class="language-Go">type Advertisement struct {
+    adName     string
+    CPC        int
+    noOfClicks int
+}
+
+func (a Advertisement) calculate() int {
+    return a.CPC * a.noOfClicks
+}
+
+func (a Advertisement) source() string {
+    return a.adName
+}
+
+</code></pre>
+
+<p>广告类型有三个字段adName, CPC(cost per click)和noof点击数(cost per click)。广告的总收入是CPC和noOfClicks的产品。</p>
+
+<p>修改主函数：</p>
+
+<pre><code class="language-Go">func main() {
+    project1 := FixedBilling{projectName: "Project 1", biddedAmount: 5000}
+    project2 := FixedBilling{projectName: "Project 2", biddedAmount: 10000}
+    project3 := TimeAndMaterial{projectName: "Project 3", noOfHours: 160, hourlyRate: 25}
+    bannerAd := Advertisement{adName: "Banner Ad", CPC: 2, noOfClicks: 500}
+    popupAd := Advertisement{adName: "Popup Ad", CPC: 5, noOfClicks: 750}
+    incomeStreams := []Income{project1, project2, project3, bannerAd, popupAd}
+    calculateNetIncome(incomeStreams)
+}
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Income From Project 1 = $5000
+Income From Project 2 = $10000
+Income From Project 3 = $4000
+Income From Banner Ad = $1000
+Income From Popup Ad = $3750
+Net income of organisation = $23750
+
+</code></pre></div></div>
+
+<p>没有对calculateNetIncome函数做任何更改，尽管添加了新的收入方式。它只是因为多态性而起作用。由于新的Advertisement类型也实现了Income接口，我们可以将它添加到incomeStreams切片中。calculateNetIncome函数也在没有任何更改的情况下工作，因为它可以调用Advertisement类型的calculate()和source()方法。</p>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B9%9D-%E5%B9%B6%E5%8F%91/" title="link to Go语言学习笔记（九）并发">Go语言学习笔记（九）并发</a></h2>
+       <p class="excerpt">并发性ConcurrencyGo是并发语言，而不是并行语言。在讨论如何在Go中进行并发处理之前，我们首先必须了解什么是并发，以及它与并行性有什么不同。(Go is a concurrent language and not a parallel one. )并发性Concurrency是同时处理许多事情的能力。举个例子，假设一个人在晨跑。在晨跑时，他的鞋带松了。现在这个人停止跑步，系鞋带，然后又开始跑步。这是一个典型的并发性示例。这个人能够同时处理跑步和系鞋带，这是一个人能够同时处理很多事...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2018-04-13 00:00:00 +0800" class="post-list__meta--date date">2018-04-13</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B9%9D-%E5%B9%B6%E5%8F%91/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%83-%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B/" title="link to Go语言学习笔记（七） 系统类型">Go语言学习笔记（七） 系统类型</a></h2>
+       <p class="excerpt">系统类型对于面向对象编程的支持Go 语言设计得非常简洁而优雅。简洁之处在于，Go语言并没有沿袭传统面向对象编程中的诸多概念，比如继承、虚函数、构造函数和析构函数、隐藏的this指针等。优雅之处在于，Go语言对面向对象编程的支持是语言类型系统中的天然组成部分。整个类型系统通过接口串联，浑然一体。在Java语言中，存在两套完全独立的类型系统：一套是值类型系统，主要是基本类型，如byte、int、boolean、char、double等，这些类型基于值语义；一套是以Object类型为根的对象类型...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2018-04-10 00:00:00 +0800" class="post-list__meta--date date">2018-04-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%83-%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%AB-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/";
+        this.page.identifier = "/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%AB-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/";
+    };
+
+    var disqus_shortname = 'vno-jekyll';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+<!--
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2018-11-05 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站由 <a href="http://onev.cat">@onevcat</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2018</span>
+    </footer>
+-->
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

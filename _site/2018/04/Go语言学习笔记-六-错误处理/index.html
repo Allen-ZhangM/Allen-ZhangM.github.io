@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Go语言学习笔记（六） 错误处理</title>
+  <meta name="description" content="error接口">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Go语言学习笔记（六） 错误处理">
+  <meta name="twitter:description" content="error接口">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Go语言学习笔记（六） 错误处理">
+  <meta property="og:description" content="error接口">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%AD-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+  <!--
+  <link rel="alternate" type="application/rss+xml" title="Allen Zhang" href="http://localhost:4000/feed.xml">
+  -->
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 Allen Zhang 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="Allen Zhang logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Allen Zhang" class="blog-button">Allen Zhang</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">一个记录我工作、学习历程的博客</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">新学期，新气象；百尺竿头，更进一步……</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">我不生产知识，只是知识的搬运工</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/Allen-ZhangM" title="@Allen-ZhangM 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <!--
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+	-->
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:allenzhanglearner@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-blue"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-04-08 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-04-08</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">Go语言学习笔记（六） 错误处理</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="error接口">error接口</h2>
+
+<p>Go语言引入了一个关于错误处理的标准模式，即error接口，该接口的定义如下：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span><span class="x"> </span><span class="kt">error</span><span class="x"> </span><span class="k">interface</span><span class="x"> </span><span class="p">{</span><span class="x">
+</span><span class="n">Error</span><span class="p">()</span><span class="x"> </span><span class="kt">string</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div>
+
+<p>对于大多数函数，如果要返回错误，大致上都可以定义为如下模式，将error作为多种返回<br />
+值中的最后一个，但这并非是强制要求：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="n">Foo</span><span class="p">(</span><span class="n">param</span><span class="x"> </span><span class="kt">int</span><span class="p">)(</span><span class="n">n</span><span class="x"> </span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+</span><span class="c">// ...</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div>
+
+<p>调用时的代码建议按如下方式处理错误情况：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">n</span><span class="p">,</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">Foo</span><span class="p">(</span><span class="m">0</span><span class="p">)</span><span class="x">
+</span><span class="k">if</span><span class="x"> </span><span class="n">err</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+</span><span class="c">// 错误处理</span><span class="x">
+</span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
+</span><span class="c">// 使用返回值n</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span></code></pre></div></div>
+
+<p>使用自定义的error类型：</p>
+
+<p>##</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="s">"errors"</span><span class="x">
+</span><span class="k">import</span><span class="x"> </span><span class="s">"fmt"</span><span class="x">
+
+</span><span class="c">// By convention, errors are the last return value and</span><span class="x">
+</span><span class="c">// have type `error`, a built-in interface.</span><span class="x">
+</span><span class="k">func</span><span class="x"> </span><span class="n">f1</span><span class="p">(</span><span class="n">arg</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">arg</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="m">42</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+        </span><span class="c">// `errors.New` constructs a basic `error` value</span><span class="x">
+        </span><span class="c">// with the given error message.</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="o">-</span><span class="m">1</span><span class="p">,</span><span class="x"> </span><span class="n">errors</span><span class="o">.</span><span class="n">New</span><span class="p">(</span><span class="s">"can't work with 42"</span><span class="p">)</span><span class="x">
+
+    </span><span class="p">}</span><span class="x">
+
+    </span><span class="c">// A nil value in the error position indicates that</span><span class="x">
+    </span><span class="c">// there was no error.</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="n">arg</span><span class="x"> </span><span class="o">+</span><span class="x"> </span><span class="m">3</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="c">// It's possible to use custom types as `error`s by</span><span class="x">
+</span><span class="c">// implementing the `Error()` method on them. Here's a</span><span class="x">
+</span><span class="c">// variant on the example above that uses a custom type</span><span class="x">
+</span><span class="c">// to explicitly represent an argument error.</span><span class="x">
+</span><span class="k">type</span><span class="x"> </span><span class="n">argError</span><span class="x"> </span><span class="k">struct</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">arg</span><span class="x">  </span><span class="kt">int</span><span class="x">
+    </span><span class="n">prob</span><span class="x"> </span><span class="kt">string</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="p">(</span><span class="n">e</span><span class="x"> </span><span class="o">*</span><span class="n">argError</span><span class="p">)</span><span class="x"> </span><span class="n">Error</span><span class="p">()</span><span class="x"> </span><span class="kt">string</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%d - %s"</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="o">.</span><span class="n">arg</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="o">.</span><span class="n">prob</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">f2</span><span class="p">(</span><span class="n">arg</span><span class="x"> </span><span class="kt">int</span><span class="p">)</span><span class="x"> </span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="x"> </span><span class="kt">error</span><span class="p">)</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">arg</span><span class="x"> </span><span class="o">==</span><span class="x"> </span><span class="m">42</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+        </span><span class="c">// In this case we use `&amp;argError` syntax to build</span><span class="x">
+        </span><span class="c">// a new struct, supplying values for the two</span><span class="x">
+        </span><span class="c">// fields `arg` and `prob`.</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="o">-</span><span class="m">1</span><span class="p">,</span><span class="x"> </span><span class="o">&amp;</span><span class="n">argError</span><span class="p">{</span><span class="n">arg</span><span class="p">,</span><span class="x"> </span><span class="s">"can't work with it"</span><span class="p">}</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="n">arg</span><span class="x"> </span><span class="o">+</span><span class="x"> </span><span class="m">3</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="x">
+</span><span class="p">}</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="c">// The two loops below test out each of our</span><span class="x">
+    </span><span class="c">// error-returning functions. Note that the use of an</span><span class="x">
+    </span><span class="c">// inline error check on the `if` line is a common</span><span class="x">
+    </span><span class="c">// idiom in Go code.</span><span class="x">
+    </span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">7</span><span class="p">,</span><span class="x"> </span><span class="m">42</span><span class="p">}</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">if</span><span class="x"> </span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">f1</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"f1 failed:"</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="p">)</span><span class="x">
+        </span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"f1 worked:"</span><span class="p">,</span><span class="x"> </span><span class="n">r</span><span class="p">)</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">for</span><span class="x"> </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">i</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="k">range</span><span class="x"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">7</span><span class="p">,</span><span class="x"> </span><span class="m">42</span><span class="p">}</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">if</span><span class="x"> </span><span class="n">r</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">f2</span><span class="p">(</span><span class="n">i</span><span class="p">);</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"f2 failed:"</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="p">)</span><span class="x">
+        </span><span class="p">}</span><span class="x"> </span><span class="k">else</span><span class="x"> </span><span class="p">{</span><span class="x">
+            </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"f2 worked:"</span><span class="p">,</span><span class="x"> </span><span class="n">r</span><span class="p">)</span><span class="x">
+        </span><span class="p">}</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+
+    </span><span class="c">// If you want to programmatically use the data in</span><span class="x">
+    </span><span class="c">// a custom error, you'll need to get the error  as an</span><span class="x">
+    </span><span class="c">// instance of the custom error type via type</span><span class="x">
+    </span><span class="c">// assertion.</span><span class="x">
+    </span><span class="n">_</span><span class="p">,</span><span class="x"> </span><span class="n">e</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">f2</span><span class="p">(</span><span class="m">42</span><span class="p">)</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">ae</span><span class="p">,</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">e</span><span class="o">.</span><span class="p">(</span><span class="o">*</span><span class="n">argError</span><span class="p">);</span><span class="x"> </span><span class="n">ok</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">ae</span><span class="o">.</span><span class="n">arg</span><span class="p">)</span><span class="x">
+        </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">ae</span><span class="o">.</span><span class="n">prob</span><span class="p">)</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span><span class="n">执行结果</span><span class="err">：</span><span class="x">
+
+</span></code></pre></div></div>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f1</span><span class="x"> </span><span class="n">worked</span><span class="o">:</span><span class="x"> </span><span class="m">10</span><span class="x">
+</span><span class="n">f1</span><span class="x"> </span><span class="n">failed</span><span class="o">:</span><span class="x"> </span><span class="n">can</span><span class="err">'</span><span class="n">t</span><span class="x"> </span><span class="n">work</span><span class="x"> </span><span class="n">with</span><span class="x"> </span><span class="m">42</span><span class="x">
+</span><span class="n">f2</span><span class="x"> </span><span class="n">worked</span><span class="o">:</span><span class="x"> </span><span class="m">10</span><span class="x">
+</span><span class="n">f2</span><span class="x"> </span><span class="n">failed</span><span class="o">:</span><span class="x"> </span><span class="m">42</span><span class="x"> </span><span class="o">-</span><span class="x"> </span><span class="n">can</span><span class="err">'</span><span class="n">t</span><span class="x"> </span><span class="n">work</span><span class="x"> </span><span class="n">with</span><span class="x"> </span><span class="n">it</span><span class="x">
+</span><span class="m">42</span><span class="x">
+</span><span class="n">can</span><span class="err">'</span><span class="n">t</span><span class="x"> </span><span class="n">work</span><span class="x"> </span><span class="n">with</span><span class="x"> </span><span class="n">it</span><span class="x">
+</span></code></pre></div></div>
+
+<h2 id="defer">defer</h2>
+
+<p>一个函数中可以存在多个defer语句，因此需要注意的是，defer语句的调用是遵照先进后出的原则，即最后一个defer语句将最先被执行。</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span><span class="x"> </span><span class="n">ReadWrite</span><span class="p">()</span><span class="x"> </span><span class="kt">bool</span><span class="x"> </span><span class="p">{</span><span class="x">
+    </span><span class="n">file</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s">"file"</span><span class="p">)</span><span class="x">
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">file</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">   </span><span class="c">//file.Close() 被添加到了defer 列表</span><span class="x">
+    </span><span class="c">// 做一些工作</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">failureX</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="no">false</span><span class="x">   </span><span class="c">//Close() 现在自动调用</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">if</span><span class="x"> </span><span class="n">failureY</span><span class="x"> </span><span class="p">{</span><span class="x">
+        </span><span class="k">return</span><span class="x"> </span><span class="no">false</span><span class="x">   </span><span class="c">//这里也是</span><span class="x">
+    </span><span class="p">}</span><span class="x">
+    </span><span class="k">return</span><span class="x"> </span><span class="no">true</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div>
+
+<p>也可以使用在defer后加一个匿名函数的做法：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">defer</span><span class="x"> </span><span class="k">func</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+</span><span class="c">// 做你复杂的清理工作</span><span class="x">
+</span><span class="p">}</span><span class="x"> </span><span class="p">()</span><span class="x">
+</span></code></pre></div></div>
+
+<p>还需要注意的一点是，<strong>defer需要先被加载之后才会生效</strong>，即如果函数返回前没执行到defer语句则不会触发，参考下面的例子。</p>
+
+<h2 id="恐慌panic和恢复recover">恐慌（Panic）和恢复（Recover）</h2>
+
+<p>Panic</p>
+
+<p>是一个内建函数，可以中断原有的控制流程，进入一个令人恐慌的流程中。当函数F 调用panic，函数F 的执行被中断，并且F 中的延迟函数会正常执行，然后F 返回到调用它的地方。在调用的地方， F 的行为就像调用了panic。这一过程继续向上，直到程序崩溃时的所有goroutine 返回。恐慌可以直接调用panic 产生。也可以由运行时错误产生，例如访问越界的数组。</p>
+
+<p>Recover<br />
+是一个内建的函数，可以让进入令人恐慌的流程中的goroutine 恢复过来。recover 仅在延迟函数中有效。在正常的执行过程中，调用recover 会返回nil 并且没有其他任何效果。如果当前的goroutine 陷入恐慌，调用recover 可以捕获到panic 的输入值，并且恢复正常的执行。</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+	</span><span class="s">"fmt"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+	</span><span class="c">//如果在这个位置添加panic，则不会触发defer</span><span class="x">
+	</span><span class="c">//panic("a problem")</span><span class="x">
+	</span><span class="c">//退出之前执行延迟函数</span><span class="x">
+	</span><span class="k">defer</span><span class="x"> </span><span class="k">func</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+		</span><span class="k">if</span><span class="x"> </span><span class="n">r</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="nb">recover</span><span class="p">();</span><span class="x"> </span><span class="n">r</span><span class="x"> </span><span class="o">!=</span><span class="x"> </span><span class="no">nil</span><span class="x"> </span><span class="p">{</span><span class="x">
+			</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="c">//输出错误信息a problem</span><span class="x">
+			</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"recover a problem"</span><span class="p">)</span><span class="x">
+		</span><span class="p">}</span><span class="x">
+	</span><span class="p">}()</span><span class="x">
+	</span><span class="c">// 发现错误，程序退出</span><span class="x">
+	</span><span class="nb">panic</span><span class="p">(</span><span class="s">"a problem"</span><span class="p">)</span><span class="x">
+	</span><span class="c">//下面的代码不会执行到</span><span class="x">
+	</span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"no problem"</span><span class="p">)</span><span class="x">
+</span><span class="p">}</span><span class="x">
+</span></code></pre></div></div>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%83-%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B/" title="link to Go语言学习笔记（七） 系统类型">Go语言学习笔记（七） 系统类型</a></h2>
+       <p class="excerpt">系统类型对于面向对象编程的支持Go 语言设计得非常简洁而优雅。简洁之处在于，Go语言并没有沿袭传统面向对象编程中的诸多概念，比如继承、虚函数、构造函数和析构函数、隐藏的this指针等。优雅之处在于，Go语言对面向对象编程的支持是语言类型系统中的天然组成部分。整个类型系统通过接口串联，浑然一体。在Java语言中，存在两套完全独立的类型系统：一套是值类型系统，主要是基本类型，如byte、int、boolean、char、double等，这些类型基于值语义；一套是以Object类型为根的对象类型...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2018-04-10 00:00:00 +0800" class="post-list__meta--date date">2018-04-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%83-%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%94-%E5%87%BD%E6%95%B0/" title="link to Go语言学习笔记（五） 函数">Go语言学习笔记（五） 函数</a></h2>
+       <p class="excerpt">函数定义函数构成代码执行的逻辑结构。在Go语言中，函数的基本组成为：关键字func、函数名、参数列表、返回值、函数体和返回语句。func (p mytype) funcname(q int) (r, s int) {	return 0, 0}  func：保留字func 用于定义一个函数  (p mytype)：可省略。函数可以定义用于特定的类型，比如这个函数只有mytype类型才可以调用  funcname：函数的名字  (q int)：int 类型的变量q 作为输入参数。参数用pass...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2018-04-05 00:00:00 +0800" class="post-list__meta--date date">2018-04-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%94-%E5%87%BD%E6%95%B0/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%AD-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/";
+        this.page.identifier = "/2018/04/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%85%AD-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/";
+    };
+
+    var disqus_shortname = 'vno-jekyll';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+<!--
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2018-11-05 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站由 <a href="http://onev.cat">@onevcat</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2018</span>
+    </footer>
+-->
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

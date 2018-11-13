@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Go语言学习笔记（一） 简介、安装</title>
+  <meta name="description" content="为什么选择Go">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Go语言学习笔记（一） 简介、安装">
+  <meta name="twitter:description" content="为什么选择Go">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Go语言学习笔记（一） 简介、安装">
+  <meta property="og:description" content="为什么选择Go">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/03/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80-%E7%AE%80%E4%BB%8B-%E5%AE%89%E8%A3%85/">
+  <!--
+  <link rel="alternate" type="application/rss+xml" title="Allen Zhang" href="http://localhost:4000/feed.xml">
+  -->
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 Allen Zhang 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="Allen Zhang logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Allen Zhang" class="blog-button">Allen Zhang</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">一个记录我工作、学习历程的博客</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">新学期，新气象；百尺竿头，更进一步……</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">我不生产知识，只是知识的搬运工</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/Allen-ZhangM" title="@Allen-ZhangM 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <!--
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+	-->
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:allenzhanglearner@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-blue"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-03-15 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-03-15</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">Go语言学习笔记（一） 简介、安装</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="为什么选择go">为什么选择Go</h2>
+
+<p>编程语言已经非常多，偏性能敏感的编译型语言有 C、C++、Java、C#、Delphi和Objective-C等，偏快速业务开发的动态解析型语言有PHP、Python、Perl、Ruby、JavaScript和Lua等，面向特定领域的语言有Erlang、R和MATLAB等，那么我们为什么需要 Go这样一门新语言呢？</p>
+
+<p>Go语言官方自称，之所以开发Go 语言，是因为“近10年来开发程序之难让我们有点沮丧”。这一定位暗示了Go语言希望取代C和Java的地位，成为最流行的通用开发语言。</p>
+
+<p>Go希望成为互联网时代的C语言。多数系统级语言（包括Java和C#）的根本编程哲学来源于C++，将C++的面向对象进一步发扬光大。但是Go语言的设计者却有不同的看法，他们认为C++ 真的没啥好学的，值得学习的是C语言。<strong>C语言经久不衰的根源是它足够简单。因此，Go语言也要足够简单！</strong></p>
+
+<p>单机时代的语言可以只关心问题本身的解决，但是随着工程规模的不断扩大，软件复杂度的不断增加，软件工程也成为语言设计层面要考虑的重要课题。多数软件需要一个团队共同去完成，在团队协作的过程中，人们需要建立统一的交互语言来降低沟通的成本。规范化体现在多个层面，如：</p>
+
+<ul>
+  <li>代码风格规范</li>
+  <li>错误处理规范</li>
+  <li>包管理</li>
+  <li>契约规范（接口）</li>
+  <li>单元测试规范</li>
+  <li>功能开发的流程规范</li>
+</ul>
+
+<p><strong>Go语言很可能是第一个将代码风格强制统一的语言</strong>，例如Go语言要求public的变量必须以大写字母开头，private变量则以小写字母开头，这种做法不仅免除了public、private关键字，更重要的是统一了命名风格。</p>
+
+<p>计算机软件经历了数十年的发展，形成了多种学术流派，有面向过程编程、面向对象编程、函数式编程、面向消息编程等，这些思想究竟孰优孰劣，众说纷纭。</p>
+
+<p>C语言是纯过程式的，这和它产生的历史背景有关。Java语言则是激进的面向对象主义推崇者，典型表现是它不能容忍体系里存在孤立的函数。而Go语言没有去否认任何一方，而是用批判吸收的眼光，将所有编程思想做了一次梳理，融合众家之长，但时刻警惕特性复杂化，极力维持语言特性的简洁，力求小而精。</p>
+
+<p><strong>从编程范式的角度来说，Go语言是变革派，而不是改良派。</strong></p>
+
+<h2 id="语言简史">语言简史</h2>
+
+<p>提起Go语言的出身，我们就必须将我们饱含敬意的眼光投向持续推出惊世骇俗成果的贝尔实验室。贝尔实验室已经走出了多位诺贝尔奖获得者，一些对于现在科技至关重要的研究成果，比如晶体管、通信技术、数码相机的感光元件CCD和光电池等都源自贝尔实验室。该实验室在科技界的地位可想而之，是一个毫无争议的科研圣地。</p>
+
+<p>这里我们重点介绍一下贝尔实验室中一个叫计算科学研究中心的部门对于操作系统和编程语言的贡献。回溯至1969年，肯·汤普逊（Ken Thompson）和丹尼斯·里奇（Dennis Ritchie）在贝尔实验室的计算科学研究中心里开发出了Unix这个大名鼎鼎的操作系统，还因为开发Unix而衍生出了一门同样赫赫有名的编程语言——C语言。对于很大一部分人而言，Unix就是操作系统的鼻祖，C语言也是计算机课程中最广泛使用的编程语言。Unix和C语言在过去的几十年以来已经造就了无数的成功商业故事，比如曾在90年代如日中天的太阳微系统（Sun MicroSystems），现在正如日中天的苹果的Mac OS X操作系统其实也可以认为是Unix的一个变种（FreeBSD）。在之后的几十年中，该研究项目又演变出了另一个叫Inferno的项目分支，以及一个名为Limbo的编程语言。Limbo是用于开发运行在小型计算机上的分布式应用的编程语言，它支持模块化编程，编译期和运行时的强类型检查，进程内基于具有类型的通信通道，原子性垃圾收集和简单的抽象数据类型。它被设计为：即便是在没有硬件内存保护的小型设备上，也能安全运行。</p>
+
+<p>Limbo语言被认为是Go语言的前身，不仅仅因为是同一批人设计的语言，而是Go语言确实从Limbo语言中继承了众多优秀的特性。贝尔实验室后来经历了多次的动荡，包括肯·汤普逊在内的Plan 9项目原班人马加入了Google。在Google，他们创造了Go语言。早在2007年9月，Go语言还是这帮大牛的20%自由时间的实验项目。到了2008年5月，Google发现了Go语言的巨大潜力，从而开始全力支持这个项目，让这批人可以全身心投入Go语言的设计和开发工作中。<strong>Go语言的第一个版本在2009年11月正式对外发布，并在此后的两年内快速迭代，发展迅猛。第一个正式版本的Go语言于2012年3月28日正式发布，让Go语言迎来了第一个引人瞩目的里程碑。</strong></p>
+
+<p>基于Google对开源的一贯拥抱态度，<strong>Go语言也自然而然地选择了开源方式发布</strong>，并使用BSD授权协议。任何人可以查看Go语言的所有源代码，并可以为Go语言发展而奉献自己的力量。</p>
+
+<h2 id="语言特性">语言特性</h2>
+
+<p><strong>自动垃圾回收：</strong>到目前为止，内存泄露的最佳解决方案是在语言级别引入自动垃圾回收算法（GarbageCollection，简称GC）。</p>
+
+<p><strong>更丰富的内置类型：</strong>Go语言内置了一个对于其他静态类型语言通常用库方式支持的字典类型（map）。新增的数据类型：数组切片（Slice）。我们可以认为数组切片是一种可动态增长而且不限制数据类型的数组。</p>
+
+<p><strong>函数多返回值：</strong>Go语言革命性地在静态开发语言阵营中率先提供了多返回值功能。</p>
+
+<p><strong>错误处理：</strong>Go语言引入了3个关键字用于标准的错误处理流程，这3个关键字分别为defer、panic和recover。</p>
+
+<p><strong>匿名函数和闭包：</strong>在Go语言中，所有的函数也是值类型，可以作为参数传递。Go语言支持常规的匿名函数和闭包。</p>
+
+<p><strong>类型和接口：</strong>Go语言并没有直接沿袭C++和Java的传统去设计一个超级复杂的类型系统，不支持继承和重载，而只是支持了最基本的类型组合功能。它还引入了一个无比强大的“非侵入式”接口的概念，即类型和接口不紧密绑定。</p>
+
+<p><strong>并发编程：</strong>Go语言引入了goroutine概念，是一种比线程更加轻盈、更省资源的协程。通过使用goroutine而不是裸用操作系统的并发机制，以及使用消息传递来共享内存而不是使用共享内存来通信，Go语言让并发编程变得更加轻盈和安全。</p>
+
+<p><strong>反射：</strong>Go语言的反射实现了反射的大部分功能，但没有像Java语言那样内置类型工厂，故而无法做到像Java那样通过类型字符串创建对象实例。</p>
+
+<p><strong>语言交互性：</strong>由于Go语言与C语言之间的天生联系，可以按Cgo的特定语法混合编写C语言代码，然后Cgo工具可以将这些混合的C代码提取并生成对于C功能的调用包装代码。开发者基本上可以完全忽略这个Go语言和C语言的边界是如何跨越的。</p>
+
+<h2 id="安装go">安装Go</h2>
+
+<p>下载地址：<a href="https://golang.org/dl/">Go下载地址</a></p>
+
+<p>一键安装就好，而且环境变量都给配置好了。</p>
+
+<p>IDE的选择，作为一个JetBrains的粉丝，自从用过idea之后就再也回不去eclipse了，自然要使用JetBrainsGoLand。</p>
+
+<p><a href="https://www.jetbrains.com/go/download/#section=windows">IDE下载地址</a></p>
+
+<p><a href="https://www.cnblogs.com/aomi/p/8288137.html">激活码</a></p>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2018/03/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95-%E5%8F%98%E9%87%8F-%E5%B8%B8%E9%87%8F-%E7%B1%BB%E5%9E%8B-(1)/" title="link to Go语言学习笔记（二） 基本语法、变量、常量、类型 (1)">Go语言学习笔记（二） 基本语法、变量、常量、类型 (1)</a></h2>
+       <p class="excerpt">基本语法Go语言中的标记Go程序是由各种标记组成的，标记可以是关键字，标识符，常量，字符串文字或符号。例如，以下Go语句由六个标记组成：fmt.Println("Hello, World!")每个标记单独表示为：fmt.Println("Hello, World!")行分隔符在Go程序中，行分隔符键是语句终止符。 也就是说，每个单独的语句不需要特殊的分隔符如：; ，也不需要像在C编译器放置; 作为语句终止符以指示一个逻辑实体的结束。例如，以下是两个不同的语句：fmt.Println("He...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2018-03-19 00:00:00 +0800" class="post-list__meta--date date">2018-03-19</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2018/03/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95-%E5%8F%98%E9%87%8F-%E5%B8%B8%E9%87%8F-%E7%B1%BB%E5%9E%8B-(1)/>继续阅读</a></div>
+   </div>
+   
+   
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2018/03/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80-%E7%AE%80%E4%BB%8B-%E5%AE%89%E8%A3%85/";
+        this.page.identifier = "/2018/03/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80-%E7%AE%80%E4%BB%8B-%E5%AE%89%E8%A3%85/";
+    };
+
+    var disqus_shortname = 'vno-jekyll';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+<!--
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2018-11-05 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站由 <a href="http://onev.cat">@onevcat</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2018</span>
+    </footer>
+-->
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
