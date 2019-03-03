@@ -1,6 +1,7 @@
 ---
 layout: post
 ---
+### interface
 golang的interface 类似java的Object，也类似 scala中的Any，类似于C++中的void*，但是又不一样。
 
 interface 是否包含有 method，底层实现上用两种 struct 来表示：**iface** 和 **eface**。
