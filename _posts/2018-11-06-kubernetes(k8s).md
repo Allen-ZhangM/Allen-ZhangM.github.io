@@ -1,7 +1,6 @@
 ---
 layout: post
 ---
-#kubernetes (k8s) k8s
 ## 简介
 Kubernetes (K8s)是Google在2014年发布的一个开源项目。
 据说Google的数据中心里运行着20多亿个容器，而且Google十年多前就开始使用容器技术。
@@ -53,6 +52,7 @@ Deployment、ReplicaSet、DaemonSet、StatefuleSet、Job等，我们逐一讨论
 - DaemonSet用于每个Node最多只运行一个Pod副本的场景。正如其名称所揭示的，DaemonSet通常用于运行daemon。
 - StatefuleSet能够保证Pod的每个副本在整个生命周期中名称是不变的，而其他Controller不提供这个功能。当某个Pod发生故障需要删除并重新启动时，Pod的名称会发生变化，同时StatefuleSet会保证副本按照固定的顺序启动、更新或者删除。
 - Job用于运行结束就删除的应用，而其他Controller中的Pod通常是长期持续运行。
+
 ### Service（服务）
 Deployment可以部署多个副本，每个Pod都有自己的IP，外界如何访问这些副本呢？ 通过Pod的IP吗？ 要知道
 Pod很可能会被频繁地销毁和重启，它们的IP会发生变化，用IP来访问不太现实。
