@@ -73,7 +73,8 @@ type sudog struct {
 }
 ```
 > 有上述的结构体我们大致可以看出channel其实就是由一个环形数组实现的队列，用于存储消息元素；两个链表实现的 goroutine 等待队列，用于存储阻塞在 recv 和 send 操作上的 goroutine；一个互斥锁，用于各个属性变动的同步，只不过这个锁是一个轻量级锁。其中 recvq 是读操作阻塞在 channel 的 goroutine 列表，sendq 是写操作阻塞在 channel 的 goroutine 列表。列表的实现是 sudog，其实就是一个对 g 的结构的封装。
-> 
+
+
 和select类似，hchan其实只是channel的头部。头部后面的一段内存连续的数组将作为channel的缓冲区，即用于存放channel数据的环形队列。qcount 和 dataqsiz 分别描述了缓冲区当前使用量【len】和容量【cap】。若channel是无缓冲的，则size是0，就没有这个环形队列了。如图：
 ![](https://raw.githubusercontent.com/Allen-ZhangM/Allen-ZhangM.github.io/master/img/posts/go_source_channel.png)
 实例化一个channel的实现：
