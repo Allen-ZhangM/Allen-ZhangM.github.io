@@ -282,13 +282,13 @@ $ vim helloServer.proto
 ```
 **文件内容：helloServer.proto**
 
-```
+```go
 syntax = "proto3";
 package my_grpc_proto;
 service HelloServer{
 //创建第一个接口
-rpc SayHello(HelloRequest)returns(HelloReplay){} 8 // 创建第二个接口
-  9rpc GetHelloMsg(HelloRequest)returns(HelloMessage){}
+rpc SayHello(HelloRequest)returns(HelloReplay){}  // 创建第二个接口
+  grpc GetHelloMsg(HelloRequest)returns(HelloMessage){}
 }
 message HelloRequest{
   string name = 1 ;
@@ -309,7 +309,7 @@ $ protoc --go_out=plugins=grpc:./ *.proto #添加grpc插件
 #得到 helloServer.pb.go文件
 ```
 ### gRPC-Server编写
-```
+```go
 package main
 
 import (
@@ -362,7 +362,7 @@ func main() {
 }
 ```
 ### gRPC-Client编写
-```
+```go
 package main
 
 import (
