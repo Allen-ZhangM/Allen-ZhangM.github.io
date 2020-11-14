@@ -1,49 +1,31 @@
-# Basic
-title: Allen Zhang
-subtitle: 一个记录我工作、学习历程的博客
-welcome_message: 我不生产知识，只是知识的搬运工
-description: 面向信仰编程
-creator: <a href="http://onev.cat">@onevcat</a>
+title: jekyll-rtd-theme
+description: Just another documentation theme compatible with GitHub Pages
 
-url: "http://vno.onevcat.com"
+theme: null
 
-permalink: /:year/:month/:title/
+# debug:
+#   compress: true
+#   dist: false
+#   shortcodes: true
 
-# Format
-highlighter: rouge
+readme_index:
+  with_frontmatter: true
 
-# supported colors: blue, green, purple, red, orange or slate. If you need clear, leave it empty.
-cover_color: blue
+plugins:
+  - jemoji
+  - jekyll-avatar
+  - jekyll-mentions
 
-# The blog button should not be removed.
-blog_button:
-    title: Blog
-    description: Visit blog
-
-# Navigation buttons in the front page.
-nav:
-    #- {title: Projects, description: My Projects, url: 'http://project.onevcat.com'}
-    # - {title: Another Button, description: A button, url: 'http://example.com'}
-
-# Pagination
-gems: [jekyll-paginate]
-paginate: 10
-paginate_path: "page/:num/"
-
-# Comment
-comment:
-    disqus: vno-jekyll
-    # duoshuo: 
-    
-# Social
-social:
-    #weibo: onevcat
-    github: Allen-ZhangM
-    #twitter: onevcat
-    #gplus: 107108267983477358170
-    mail: allenzhanglearner@gmail.com
-
-# Google Analytics
-ga:
-    # id: your_ga_id
-    # host: your_host
+exclude:
+  - Makefile
+  - CNAME
+  - LICENSE
+  - update.sh
+  - Gemfile
+  - Gemfile.lock
+  - requirements.txt
+  - node_modules
+  - package.json
+  - package-lock.json
+  - webpack.config.js
+  - jekyll-rtd-theme.gemspec
