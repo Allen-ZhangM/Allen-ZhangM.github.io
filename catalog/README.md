@@ -1,8 +1,8 @@
 ---
-sort: 2
+sort: 1
 ---
 
-# menu
+# category
 
 
 {% include list.liquid all=true %}

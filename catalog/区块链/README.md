@@ -1,8 +1,6 @@
 ---
 sort: 1
 ---
-# 区块链
-
-source: `{{ page.path }}`
+# blockchain
 
 {% include list.liquid all=true %}
