@@ -1,6 +1,7 @@
 ---
 sort: 10
 ---
+# Go源码分析--interface的底层实现
 ### interface
 golang的interface 类似java的Object，也类似 scala中的Any，类似于C++中的void*，但是又不一样。
 

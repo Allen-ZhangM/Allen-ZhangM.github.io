@@ -1,6 +1,7 @@
 ---
 sort: 11
 ---
+# Go源码分析--channel的底层实现
 ### channel路径
 先看channel的实现是在哪里？在**runtime**包下面咯，路径为：**./src/runtime/chan.go** 文件中，其中主要的结构体为：
 ```go
