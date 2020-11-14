@@ -1,5 +1,5 @@
 ---
-sort: 31
+sort: 
 ---
 ## 简介
 Kubernetes (K8s)是Google在2014年发布的一个开源项目。
