@@ -1,5 +1,5 @@
 ---
-sort: 27
+sort: 16
 ---
 
 # 超级账本 Fabric(五)Fabric CA 应用与配置

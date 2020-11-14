@@ -1,5 +1,5 @@
 ---
-sort: 21
+sort: 10
 ---
 # fastDFS&nginx
 ## 1. fastDFS

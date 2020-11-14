@@ -1,5 +1,5 @@
 ---
-sort: 28
+sort: 17
 ---
 # 超级账本 Fabric(六)Fabric SDK Go
 ## 使用Fabric SDK Go

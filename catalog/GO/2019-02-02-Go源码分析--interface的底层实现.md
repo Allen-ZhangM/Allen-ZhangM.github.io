@@ -1,5 +1,5 @@
 ---
-sort: 32
+sort: 10
 ---
 ### interface
 golang的interface 类似java的Object，也类似 scala中的Any，类似于C++中的void*，但是又不一样。
